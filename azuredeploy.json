@@ -1,0 +1,52 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmName": {
+      "type": "string"
+    },
+    "assetLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The artifacts location URI"
+      },
+      "defaultValue": "https://euwestutility.blob.core.windows.net/scripts/"
+    },
+    "tempDriveLetter": {
+      "type":  "string",
+      "metadata": {
+        "description" :  "The target drive letter for the temp drive"
+      }
+    }
+  },
+  "variables": {
+    "apiVersionVMExtensions": "2015-06-15",
+    "DSCModuleUrl": "[concat(parameters('assetLocation'), 'MoveAzureTempDrive.ps1.zip')]",
+    "DSCConfigurationFunction": "MoveAzureTempDrive.ps1\\MoveAzureTempDrive"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('vmName'),'/MoveAzureTempDrive')]",
+      "apiVersion": "[variables('apiVersionVMExtensions')]",
+      "location": "[resourceGroup().location]",      
+
+      "properties": {
+        "publisher": "Microsoft.Powershell",
+        "type": "DSC",
+        "typeHandlerVersion": "2.20",
+        "autoUpgradeMinorVersion": "true",
+        "settings": {
+          "modulesUrl": "[variables('DSCModuleUrl')]",
+          "wmfVersion": "latest",
+          "configurationFunction": "[variables('DSCConfigurationFunction')]",
+          "properties": {
+             "TempDriveLetter" :  "[parameters('tempDriveLetter')]"
+          }
+        }        
+      }
+    }
+  ],
+    "outputs": {
+    }
+}
