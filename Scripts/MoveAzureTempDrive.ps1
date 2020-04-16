@@ -5,7 +5,9 @@
         [string]$TempDriveLetter
     )
 
-    Import-DscResource -ModuleName MoveAzureTempDrive, xComputerManagement
+    Import-DscResource -ModuleName MoveAzureTempDrive
+    Import-DSCResource -Module @{ModuleName="xComputerManagement";ModuleVersion="1.8.0.0"}
+
 
     Node localhost 
     {

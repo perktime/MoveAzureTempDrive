@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
   "parameters": {
     "vmName": {
-      "value": "<put_your_existing_vm_name_here>"
+      "value": "petetest01"
     },
     "assetLocation": {
-      "value": "https://petedscutil.blob.core.windows.net/scripts"
+      "value": "https://peteafs01.blob.core.windows.net/scripts/"
     },
     "tempDriveLetter": {
       "value": "Z"
